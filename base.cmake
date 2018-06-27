@@ -26,17 +26,20 @@ ENABLE_LANGUAGE(ASM)
 # objcopy и objdump для создания хексов и бинариков
 SET(CMAKE_OBJCOPY ${TOOLCHAIN_BIN_DIR}/arm-none-eabi-objcopy CACHE INTERNAL "")
 SET(CMAKE_OBJDUMP ${TOOLCHAIN_BIN_DIR}/arm-none-eabi-objdump CACHE INTERNAL "")
+SET(CMAKE_SIZE "${TOOLCHAIN_BIN_DIR}/arm-none-eabi-size${EXE_SUFFIX}" CACHE INTERNAL "")
 SET(CMAKE_SYSTEM_NAME Generic)
 SET(CMAKE_SYSTEM_PROCESSOR arm)
 set(CMAKE_C_COMPILER_WORKS 1)
 set(CMAKE_CXX_COMPILER_WORKS 1)
 SET(CMAKE_CROSSCOMPILING 1)
 
-
+SET(COMMON_FLAGS "-isystem ${TOOLCHAIN_INC_DIR} -mcpu=cortex-r4 -mtune=cortex-r4f -march=armv7-r -marm -mfloat-abi=hard -mfpu=vfpv3-d16 -fno-exceptions -fno-builtin -Wall")
+#TODO: -Wl,-flto
 # Флаги компиляторов, тут можно подкрутить
-SET(CMAKE_C_FLAGS "-isystem ${TOOLCHAIN_INC_DIR} -mcpu=cortex-r4 -mtune=cortex-r4f -march=armv7-r -marm -mfloat-abi=hard -mfpu=vfpv3-d16 -fno-exceptions -fno-builtin -Wall -std=gnu99 ${EXTRA_FLAGS_SEMIHOSTING}" CACHE INTERNAL "c compiler flags")
-SET(CMAKE_CXX_FLAGS "-isystem ${TOOLCHAIN_INC_DIR} -mcpu=cortex-r4 -mtune=cortex-r4f -march=armv7-r -marm -mfloat-abi=hard -mfpu=vfpv3-d16 -fno-exceptions -fno-builtin -Wall " CACHE INTERNAL "cxx compiler flags")
-SET(CMAKE_EXE_LINKER_FLAGS "-nostartfiles -nodefaultlibs -nostdlib -Wl,-Map -Wl,main.map -mtune=cortex-r4f -marm -fno-exceptions -ffunction-sections -fdata-sections -mfloat-abi=hard -specs=\"nosys.specs\"" CACHE INTERNAL "exe link flags")
+SET(CMAKE_ASM_FLAGS "${COMMON_FLAGS} " CACHE INTERNAL "asm compiler flags")
+SET(CMAKE_C_FLAGS "${COMMON_FLAGS} -std=gnu99 " CACHE INTERNAL "c compiler flags")
+SET(CMAKE_CXX_FLAGS "${COMMON_FLAGS} " CACHE INTERNAL "cxx compiler flags")
+SET(CMAKE_EXE_LINKER_FLAGS "-nostartfiles -nodefaultlibs -Wl,-Map -Wl,main.map -mtune=cortex-r4f -marm -fno-exceptions -ffunction-sections -fdata-sections -mfloat-abi=hard  -Wl,--gc-sections --specs=nosys.specs" CACHE INTERNAL "exe link flags")
 SET(CMAKE_MODULE_LINKER_FLAGS "-L${TOOLCHAIN_LIB_DIR}" CACHE INTERNAL "module link flags")
 SET(CMAKE_SHARED_LINKER_FLAGS "-L${TOOLCHAIN_LIB_DIR}" CACHE INTERNAL "shared lnk flags")
 SET(CMAKE_SHARED_LIBRARY_LINK_C_FLAGS)

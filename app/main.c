@@ -76,4 +76,5 @@ int main(void)
 
 
 /* USER CODE BEGIN (4) */
+void __attribute__ ((weak)) _fini(void)  {}
 /* USER CODE END */
