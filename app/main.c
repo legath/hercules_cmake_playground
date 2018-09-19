@@ -48,6 +48,7 @@
 /* Include Files */
 
 #include "sys_common.h"
+#include "sci.h"
 
 /* USER CODE BEGIN (1) */
 /* USER CODE END */
@@ -60,17 +61,11 @@
 *   The user can use this function to implement the application.
 */
 
-/* USER CODE BEGIN (2) */
-/* USER CODE END */
-
-uint8	emacAddress[6U] = 	{0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU, 0xFFU};
-uint32 	emacPhyAddress	=	0U;
 
 int main(void)
 {
-/* USER CODE BEGIN (3) */
-/* USER CODE END */
-
+    sci_init(115200, 0);
+    scilin_init();
     return 0;
 }
 
@@ -78,3 +73,4 @@ int main(void)
 /* USER CODE BEGIN (4) */
 void __attribute__ ((weak)) _fini(void)  {}
 /* USER CODE END */
+
